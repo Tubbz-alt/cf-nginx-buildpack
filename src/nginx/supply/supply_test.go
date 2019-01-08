@@ -50,7 +50,7 @@ var _ = Describe("Supply", func() {
 		os.RemoveAll(depDir)
 	})
 
-	Describe("InstallNginx", func() {
+	Describe("InstallNGINX", func() {
 		BeforeEach(func() {
 			supplier.VersionLines = map[string]string{"": "1.13.x", "mainline": "1.13.x", "stable": "1.12.x"}
 			mockManifest.EXPECT().AllDependencyVersions("nginx").Return([]string{"1.12.2", "1.12.3", "1.13.8"}).AnyTimes()
@@ -63,7 +63,7 @@ var _ = Describe("Supply", func() {
 			})
 
 			It("Logs available versions and returns an error", func() {
-				Expect(supplier.InstallNginx()).ToNot(Succeed())
+				Expect(supplier.InstallNGINX()).ToNot(Succeed())
 				Expect(buffer.String()).To(ContainSubstring(`Available versions: mainline, stable, 1.12.x, 1.13.x, 1.12.2, 1.12.3, 1.13.8`))
 			})
 		})
@@ -75,7 +75,7 @@ var _ = Describe("Supply", func() {
 
 			It("Logs the mainline version", func() {
 				mockInstaller.EXPECT().InstallDependency(libbuildpack.Dependency{Name: "nginx", Version: "1.13.8"}, gomock.Any())
-				Expect(supplier.InstallNginx()).To(Succeed())
+				Expect(supplier.InstallNGINX()).To(Succeed())
 				Expect(buffer).To(ContainSubstring(`Requested nginx version: mainline => 1.13.8`))
 			})
 		})
@@ -87,7 +87,7 @@ var _ = Describe("Supply", func() {
 
 			It("Logs the stable version", func() {
 				mockInstaller.EXPECT().InstallDependency(libbuildpack.Dependency{Name: "nginx", Version: "1.12.3"}, gomock.Any())
-				Expect(supplier.InstallNginx()).To(Succeed())
+				Expect(supplier.InstallNGINX()).To(Succeed())
 				Expect(buffer).To(ContainSubstring(`Requested nginx version: stable => 1.12.3`))
 			})
 		})
@@ -99,7 +99,7 @@ var _ = Describe("Supply", func() {
 
 			It("Logs the mainline version", func() {
 				mockInstaller.EXPECT().InstallDependency(libbuildpack.Dependency{Name: "nginx", Version: "1.13.8"}, gomock.Any())
-				Expect(supplier.InstallNginx()).To(Succeed())
+				Expect(supplier.InstallNGINX()).To(Succeed())
 				Expect(buffer).To(ContainSubstring("No nginx version specified - using mainline => 1.13.8"))
 			})
 		})
@@ -111,7 +111,7 @@ var _ = Describe("Supply", func() {
 
 			It("Logs the semver request and the matching version", func() {
 				mockInstaller.EXPECT().InstallDependency(libbuildpack.Dependency{Name: "nginx", Version: "1.12.3"}, gomock.Any())
-				Expect(supplier.InstallNginx()).To(Succeed())
+				Expect(supplier.InstallNGINX()).To(Succeed())
 				Expect(buffer).To(ContainSubstring(`Requested nginx version: 1.12.x => 1.12.3`))
 			})
 		})
@@ -123,7 +123,7 @@ var _ = Describe("Supply", func() {
 
 			It("Logs the specific version", func() {
 				mockInstaller.EXPECT().InstallDependency(libbuildpack.Dependency{Name: "nginx", Version: "1.12.2"}, gomock.Any())
-				Expect(supplier.InstallNginx()).To(Succeed())
+				Expect(supplier.InstallNGINX()).To(Succeed())
 				Expect(buffer).To(ContainSubstring(`Requested nginx version: 1.12.2 => 1.12.2`))
 			})
 		})
@@ -137,31 +137,31 @@ var _ = Describe("Supply", func() {
 
 			It("stable emits warning", func() {
 				supplier.Config.Nginx.Version = "stable"
-				Expect(supplier.InstallNginx()).To(Succeed())
+				Expect(supplier.InstallNGINX()).To(Succeed())
 				Expect(buffer).To(ContainSubstring(warning))
 			})
 
 			It("mainline does not warn", func() {
 				supplier.Config.Nginx.Version = "mainline"
-				Expect(supplier.InstallNginx()).To(Succeed())
+				Expect(supplier.InstallNGINX()).To(Succeed())
 				Expect(buffer).ToNot(ContainSubstring(warning))
 			})
 
 			It("1.13.x does not warn", func() {
 				supplier.Config.Nginx.Version = "1.13.x"
-				Expect(supplier.InstallNginx()).To(Succeed())
+				Expect(supplier.InstallNGINX()).To(Succeed())
 				Expect(buffer).ToNot(ContainSubstring(warning))
 			})
 
 			It("1.12.x emits warning", func() {
 				supplier.Config.Nginx.Version = "stable"
-				Expect(supplier.InstallNginx()).To(Succeed())
+				Expect(supplier.InstallNGINX()).To(Succeed())
 				Expect(buffer).To(ContainSubstring(warning))
 			})
 
 			It("1.12.2 emits warning", func() {
 				supplier.Config.Nginx.Version = "stable"
-				Expect(supplier.InstallNginx()).To(Succeed())
+				Expect(supplier.InstallNGINX()).To(Succeed())
 				Expect(buffer).To(ContainSubstring(warning))
 			})
 		})
@@ -179,7 +179,7 @@ var _ = Describe("Supply", func() {
 		})
 	})
 
-	Describe("nginx.conf validation", func() {
+	Describe("ValidateNginxConf", func() {
 		var (
 			buildDir string
 			err      error
@@ -208,5 +208,38 @@ var _ = Describe("Supply", func() {
 			ioutil.WriteFile(filepath.Join(buildDir, "nginx.conf"), []byte("{{  port  }}"), 0666)
 			Expect(supplier.ValidateNginxConf()).To(Succeed())
 		})
+
+		Context("CheckAccessLogging", func() {
+			It("logs a warning when access logging is not set", func() {
+				ioutil.WriteFile(filepath.Join(buildDir, "nginx.conf"), []byte("some content"), 0666)
+				Expect(supplier.CheckAccessLogging()).To(Succeed())
+				Expect(buffer.String()).To(ContainSubstring("Warning: access logging is turned off in your nginx.conf file, this may make your app difficult to debug."))
+			})
+
+			It("logs a warning when access logging is set to off", func() {
+				ioutil.WriteFile(filepath.Join(buildDir, "nginx.conf"), []byte("access_log off"), 0666)
+				Expect(supplier.CheckAccessLogging()).To(Succeed())
+				Expect(buffer.String()).To(ContainSubstring("Warning: access logging is turned off in your nginx.conf file, this may make your app difficult to debug."))
+			})
+
+			It("logs a warning when access logging is set to off with extra spaces", func() {
+				ioutil.WriteFile(filepath.Join(buildDir, "nginx.conf"), []byte("access_log    off"), 0666)
+				Expect(supplier.CheckAccessLogging()).To(Succeed())
+				Expect(buffer.String()).To(ContainSubstring("Warning: access logging is turned off in your nginx.conf file, this may make your app difficult to debug."))
+			})
+
+			It("logs a warning when access logging is set to OFF", func() {
+				ioutil.WriteFile(filepath.Join(buildDir, "nginx.conf"), []byte("access_log OFF"), 0666)
+				Expect(supplier.CheckAccessLogging()).To(Succeed())
+				Expect(buffer.String()).To(ContainSubstring("Warning: access logging is turned off in your nginx.conf file, this may make your app difficult to debug."))
+			})
+
+			It("logs a warning when access logging is set to a path", func() {
+				ioutil.WriteFile(filepath.Join(buildDir, "nginx.conf"), []byte("access_log /some/path"), 0666)
+				Expect(supplier.CheckAccessLogging()).To(Succeed())
+				Expect(buffer.String()).ToNot(ContainSubstring("Warning: access logging is turned off in your nginx.conf file, this may make your app difficult to debug."))
+			})
+		})
+
 	})
 })

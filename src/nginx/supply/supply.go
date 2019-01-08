@@ -10,12 +10,14 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 	"time"
 
-	"github.com/cloudfoundry/libbuildpack"
 	"html/template"
+
+	"github.com/cloudfoundry/libbuildpack"
 )
 
 type Command interface {
@@ -85,7 +87,7 @@ func (s *Supplier) Run() error {
 		return err
 	}
 
-	if err := s.InstallNginx(); err != nil {
+	if err := s.InstallNGINX(); err != nil {
 		s.Log.Error("Could not install nginx: %s", err.Error())
 		return err
 	}
@@ -144,24 +146,32 @@ func (s *Supplier) Setup() error {
 }
 
 func (s *Supplier) ValidateNginxConf() error {
-	if err := s.validateNginxConfExists(); err != nil {
-		return err
-	}
-
 	if err := s.validateNginxConfHasPort(); err != nil {
 		return err
 	}
 
-	return s.validateNginxConfSyntax()
+	if err := s.validateNGINXConfSyntax(); err != nil {
+		return err
+	}
+
+	return s.CheckAccessLogging()
 }
 
-func (s *Supplier) validateNginxConfExists() error {
-	if exists, err := libbuildpack.FileExists(filepath.Join(s.Stager.BuildDir(), "nginx.conf")); err != nil {
+func (s *Supplier) CheckAccessLogging() error {
+	contents, err := ioutil.ReadFile(filepath.Join(s.Stager.BuildDir(), "nginx.conf"))
+	if err != nil {
 		return err
-	} else if !exists {
-		s.Log.Error("nginx.conf file must be present at the app root")
-		return errors.New("no nginx")
 	}
+
+	isSetToOff, err := regexp.MatchString(`(?i)access_log\s+off`, string(contents))
+	if err != nil {
+		return err
+	}
+
+	if !strings.Contains(string(contents), "access_log") || isSetToOff {
+		s.Log.Warning("Warning: access logging is turned off in your nginx.conf file, this may make your app difficult to debug.")
+	}
+
 	return nil
 }
 
@@ -174,6 +184,7 @@ func (s *Supplier) validateNginxConfHasPort() error {
 	tmpDir, err := ioutil.TempDir("", "")
 	if err != nil {
 		s.Log.Error("Error creating temp dir: %v", err)
+		return err
 	}
 	defer os.RemoveAll(tmpDir)
 
@@ -181,19 +192,20 @@ func (s *Supplier) validateNginxConfHasPort() error {
 	fileHandle, err := os.Create(checkConfFile)
 	if err != nil {
 		s.Log.Error("Could not open tmp config file for writing: %s", err)
+		return err
 	}
 	defer fileHandle.Close()
 
 	randString := randomString(16)
 
 	funcMap := template.FuncMap{
-		"env": func() string {
+		"env": func(arg string) string {
 			return ""
 		},
 		"port": func() string {
 			return randString
 		},
-		"module": func(name string) string {
+		"module": func(arg string) string {
 			return ""
 		},
 	}
@@ -201,25 +213,29 @@ func (s *Supplier) validateNginxConfHasPort() error {
 	t, err := template.New("conf").Option("missingkey=zero").Funcs(funcMap).Parse(string(conf))
 	if err != nil {
 		s.Log.Error("Could not parse tmp config file: %s", err)
+		return err
 	}
 
 	if err := t.Execute(fileHandle, nil); err != nil {
 		s.Log.Error("Could not write tmp config file: %s", err)
+		return err
 	}
 
 	contents, err := ioutil.ReadFile(checkConfFile)
 	if err != nil {
 		s.Log.Error("Could not read temp config file: %v", err)
+		return err
 	}
 
 	if !strings.Contains(string(contents), randString) {
 		s.Log.Error("nginx.conf file must be configured to respect the value of `{{port}}`")
 		return errors.New("no {{port}} in nginx.conf")
 	}
+
 	return nil
 }
 
-func randomString(strLength int) (string) {
+func randomString(strLength int) string {
 	rand.Seed(time.Now().UnixNano())
 
 	const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -233,7 +249,7 @@ func randomString(strLength int) (string) {
 	return randString
 }
 
-func (s *Supplier) validateNginxConfSyntax() error {
+func (s *Supplier) validateNGINXConfSyntax() error {
 	tmpConfDir, err := ioutil.TempDir("/tmp", "conf")
 	if err != nil {
 		return fmt.Errorf("Error creating temp nginx conf dir: %s", err.Error())
@@ -309,7 +325,7 @@ func (s *Supplier) isStableLine(version string) bool {
 	return err == nil
 }
 
-func (s *Supplier) InstallNginx() error {
+func (s *Supplier) InstallNGINX() error {
 	dep, err := s.findMatchingVersion("nginx", s.Config.Nginx.Version)
 	if err != nil {
 		s.Log.Info(`Available versions: ` + strings.Join(s.availableVersions(), ", "))
