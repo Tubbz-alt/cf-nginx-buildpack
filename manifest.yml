@@ -45,40 +45,58 @@ dependencies:
   uri: https://buildpacks.cloudfoundry.org/dependencies/openresty/openresty-1.13.6.2-linux-x64-cflinuxfs3-f1df4777.tgz
   version: 1.13.6.2
 - cf_stacks:
-  - opensuse42
+  - sle12
   name: nginx
-  sha256: 68d5faa6300652106a2bb996d931f66aaacc158a0144e178fb337ffccd3673fe
-  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.14.2-linux-x64-opensuse42-68d5faa6.tgz
+  sha256: b0ade8fde926d8c67b0838a350849d8458bc654514dac0325a3f6dd87ab83410
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.14.2-linux-x64-sle12-b0ade8fd.tgz
   version: 1.14.2
 - cf_stacks:
   - sle12
   name: nginx
-  sha256: 3000b8ef9c8d7e89ab40176f56494898be9f981ebb4f4140043ff25ec876829b
-  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.14.2-linux-x64-sle12-3000b8ef.tgz
-  version: 1.14.2
-- cf_stacks:
-  - opensuse42
-  name: nginx
-  sha256: f3ce78276ed8078abdcc6ad21c7db249ec82430325ee04c5f3686cf9c6aa945e
-  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.15.8-linux-x64-opensuse42-f3ce7827.tgz
+  sha256: 1ef0142a620e786f1cf68c546733e0d816d7acd5032d2b0fa15972f20adb572f
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.15.8-linux-x64-sle12-1ef0142a.tgz
   version: 1.15.8
 - cf_stacks:
   - sle12
-  name: nginx
-  sha256: 730b6af9d5903fe5401e87ede3220fcc05e6ccd69e4546113832ed5af4aa1954
-  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.15.8-linux-x64-sle12-730b6af9.tgz
-  version: 1.15.8
-- cf_stacks:
-  - opensuse42
   name: openresty
-  sha256: f302cd0202f666ad1dc9f19bd79876e7e15d3fc4b2068abd87830982ceeefdc4
-  uri: https://cf-buildpacks.suse.com/dependencies/openresty/openresty-1.13.6.2-linux-x64-opensuse42-f302cd02.tgz
+  sha256: 27e4b6f3b151914f7d724c371e092d9d03a27b3189db88643ee063da1dbfc418
+  uri: https://cf-buildpacks.suse.com/dependencies/openresty/openresty-1.13.6.2-linux-x64-sle12-27e4b6f3.tgz
   version: 1.13.6.2
 - cf_stacks:
-  - sle12
+  - opensuse42
+  name: nginx
+  sha256: d33464267af3c29f48d86140ca061207568a5db9fd3d74fa563fae5a6327de55
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.14.2-linux-x64-opensuse42-d3346426.tgz
+  version: 1.14.2
+- cf_stacks:
+  - opensuse42
+  name: nginx
+  sha256: fb7044cac835abe5fda49a069db6d5ca0ea27a253d59318f7e11f536479cb2f6
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.15.8-linux-x64-opensuse42-fb7044ca.tgz
+  version: 1.15.8
+- cf_stacks:
+  - opensuse42
   name: openresty
-  sha256: f8ef5e8b5cbd9448c4ab218a468ff34d7bd79a899065059e612c686a2f8d5852
-  uri: https://cf-buildpacks.suse.com/dependencies/openresty/openresty-1.13.6.2-linux-x64-sle12-f8ef5e8b.tgz
+  sha256: 88f3d21ef7f48244dafa91aad4eac6ec3d2b31b27503d7279834592b1ee2fac2
+  uri: https://cf-buildpacks.suse.com/dependencies/openresty/openresty-1.13.6.2-linux-x64-opensuse42-88f3d21e.tgz
+  version: 1.13.6.2
+- cf_stacks:
+  - cfsle15fs
+  name: nginx
+  sha256: 78e283f47799ded93f6f3164172076a5fc3703a7d385d7fd900eba472d7d9ae0
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.14.2-linux-x64-cfsle15fs-78e283f4.tgz
+  version: 1.14.2
+- cf_stacks:
+  - cfsle15fs
+  name: nginx
+  sha256: 67e3ae9cf614ce83b7abab6a1d1f7534d4b2e0cf2f46735c01d6d796e4bce207
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.15.8-linux-x64-cfsle15fs-67e3ae9c.tgz
+  version: 1.15.8
+- cf_stacks:
+  - cfsle15fs
+  name: openresty
+  sha256: 77abd120f7d5db13c5c0f5068256b57dda7c816946e6f2290f4425bb444468b1
+  uri: https://cf-buildpacks.suse.com/dependencies/openresty/openresty-1.13.6.2-linux-x64-cfsle15fs-77abd120.tgz
   version: 1.13.6.2
 dependency_deprecation_dates: []
 include_files:
