@@ -1,62 +1,110 @@
----
-language: nginx
 default_versions:
 - name: nginx
   version: 1.15.9
-version_lines:
-  mainline: 1.15.x
-  stable: 1.14.x
-dependency_deprecation_dates: []
 dependencies:
-- name: nginx
-  version: 1.14.2
-  uri: https://buildpacks.cloudfoundry.org/dependencies/nginx/nginx-1.14.2-linux-x64-cflinuxfs2-f2339aab.tgz
+- cf_stacks:
+  - cflinuxfs2
+  name: nginx
   sha256: f2339aab3e4663dfe2caa10461165098ac73bda93e288b7db6801d5baf39be8a
-  cf_stacks:
-  - cflinuxfs2
   source: http://nginx.org/download/nginx-1.14.2.tar.gz
   source_sha256: 002d9f6154e331886a2dd4e6065863c9c1cf8291ae97a1255308572c02be9797
-- name: nginx
+  uri: https://buildpacks.cloudfoundry.org/dependencies/nginx/nginx-1.14.2-linux-x64-cflinuxfs2-f2339aab.tgz
   version: 1.14.2
-  uri: https://buildpacks.cloudfoundry.org/dependencies/nginx/nginx-1.14.2-linux-x64-cflinuxfs3-f11b4dba.tgz
-  sha256: f11b4dba13e74cf8129087bfc0a577d28b049f2609eb7d62e25fb059ce9c3c24
-  cf_stacks:
+- cf_stacks:
   - cflinuxfs3
+  name: nginx
+  sha256: f11b4dba13e74cf8129087bfc0a577d28b049f2609eb7d62e25fb059ce9c3c24
   source: http://nginx.org/download/nginx-1.14.2.tar.gz
   source_sha256: 002d9f6154e331886a2dd4e6065863c9c1cf8291ae97a1255308572c02be9797
-- name: nginx
-  version: 1.15.9
-  uri: https://buildpacks.cloudfoundry.org/dependencies/nginx/nginx-1.15.9-linux-x64-cflinuxfs2-15ad9b59.tgz
+  uri: https://buildpacks.cloudfoundry.org/dependencies/nginx/nginx-1.14.2-linux-x64-cflinuxfs3-f11b4dba.tgz
+  version: 1.14.2
+- cf_stacks:
+  - cflinuxfs2
+  name: nginx
   sha256: 15ad9b59fd5d86561b6b0aa3070e240f03e71aad827acd541403a301bc653c82
-  cf_stacks:
-  - cflinuxfs2
   source: http://nginx.org/download/nginx-1.15.9.tar.gz
   source_sha256: e4cfba989bba614cd53f3f406ac6da9f05977d6b1296e5d20a299f10c2d7ae43
-- name: nginx
+  uri: https://buildpacks.cloudfoundry.org/dependencies/nginx/nginx-1.15.9-linux-x64-cflinuxfs2-15ad9b59.tgz
   version: 1.15.9
-  uri: https://buildpacks.cloudfoundry.org/dependencies/nginx/nginx-1.15.9-linux-x64-cflinuxfs3-cde9edd0.tgz
-  sha256: cde9edd0229c44cc5f5af5d220eaf06d849d44c6de2e54748e46f97e7ce0b583
-  cf_stacks:
+- cf_stacks:
   - cflinuxfs3
+  name: nginx
+  sha256: cde9edd0229c44cc5f5af5d220eaf06d849d44c6de2e54748e46f97e7ce0b583
   source: http://nginx.org/download/nginx-1.15.9.tar.gz
   source_sha256: e4cfba989bba614cd53f3f406ac6da9f05977d6b1296e5d20a299f10c2d7ae43
-- name: openresty
-  version: 1.13.6.2
-  uri: https://buildpacks.cloudfoundry.org/dependencies/openresty/openresty-1.13.6.2-linux-x64-cflinuxfs2-95395211.tgz
-  sha256: 953952111aace588b1e39b7553ddef75faa14c7b0016d723fb1c20327c83c353
-  cf_stacks:
+  uri: https://buildpacks.cloudfoundry.org/dependencies/nginx/nginx-1.15.9-linux-x64-cflinuxfs3-cde9edd0.tgz
+  version: 1.15.9
+- cf_stacks:
   - cflinuxfs2
+  name: openresty
+  sha256: 953952111aace588b1e39b7553ddef75faa14c7b0016d723fb1c20327c83c353
   source: http://openresty.org/download/openresty-1.13.6.2.tar.gz
   source_sha256: 946e1958273032db43833982e2cec0766154a9b5cb8e67868944113208ff2942
-- name: openresty
+  uri: https://buildpacks.cloudfoundry.org/dependencies/openresty/openresty-1.13.6.2-linux-x64-cflinuxfs2-95395211.tgz
   version: 1.13.6.2
-  uri: https://buildpacks.cloudfoundry.org/dependencies/openresty/openresty-1.13.6.2-linux-x64-cflinuxfs3-f1df4777.tgz
-  sha256: f1df477759bdf6c1d4c0c84ef8784492a094fb26ac7fcdcc88e5ec8b39e44d27
-  cf_stacks:
+- cf_stacks:
   - cflinuxfs3
+  name: openresty
+  sha256: f1df477759bdf6c1d4c0c84ef8784492a094fb26ac7fcdcc88e5ec8b39e44d27
   source: http://openresty.org/download/openresty-1.13.6.2.tar.gz
   source_sha256: 946e1958273032db43833982e2cec0766154a9b5cb8e67868944113208ff2942
-pre_package: scripts/build.sh
+  uri: https://buildpacks.cloudfoundry.org/dependencies/openresty/openresty-1.13.6.2-linux-x64-cflinuxfs3-f1df4777.tgz
+  version: 1.13.6.2
+- cf_stacks:
+  - sle12
+  name: nginx
+  sha256: f5f64ae54f788e3332847a4a860a50ac177573a8bb1775cb6cfb96a3efaa45d6
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.14.2-linux-x64-sle12-f5f64ae5.tgz
+  version: 1.14.2
+- cf_stacks:
+  - sle12
+  name: nginx
+  sha256: c69da9acfadb53fc3773aea3e34cc1f1cf402917dceafb42da0b1be31bcdc7a2
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.15.9-linux-x64-sle12-c69da9ac.tgz
+  version: 1.15.9
+- cf_stacks:
+  - sle12
+  name: openresty
+  sha256: 1f725cb6e3810d6079d79e65b88e08dc2517f0e7fa4a92987e8f2769e74764c2
+  uri: https://cf-buildpacks.suse.com/dependencies/openresty/openresty-1.13.6.2-linux-x64-sle12-1f725cb6.tgz
+  version: 1.13.6.2
+- cf_stacks:
+  - opensuse42
+  name: nginx
+  sha256: 1bbc22f15c3133a6de45711d255a83bf6f6e85d136d02f958c51c62460a8968b
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.14.2-linux-x64-opensuse42-1bbc22f1.tgz
+  version: 1.14.2
+- cf_stacks:
+  - opensuse42
+  name: nginx
+  sha256: da5a4c3102c53e7672a7ea2c9bd357749641d073f83ec1753a16058010120d99
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.15.9-linux-x64-opensuse42-da5a4c31.tgz
+  version: 1.15.9
+- cf_stacks:
+  - opensuse42
+  name: openresty
+  sha256: d3389d15aac78036422837284731774b445ef312efe0bd9deda411cff3a635c7
+  uri: https://cf-buildpacks.suse.com/dependencies/openresty/openresty-1.13.6.2-linux-x64-opensuse42-d3389d15.tgz
+  version: 1.13.6.2
+- cf_stacks:
+  - sle15
+  name: nginx
+  sha256: 96ae237973ea87486bc14b8c35db4ea5064c4d0053cb404c633d13450e81e159
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.14.2-linux-x64-sle15-96ae2379.tgz
+  version: 1.14.2
+- cf_stacks:
+  - sle15
+  name: nginx
+  sha256: bd7e1b085ed4d92cc953fb790373a0a42715dd45ddc37d2ce2b5c0537c79bde0
+  uri: https://cf-buildpacks.suse.com/dependencies/nginx/nginx-1.15.9-linux-x64-sle15-bd7e1b08.tgz
+  version: 1.15.9
+- cf_stacks:
+  - sle15
+  name: openresty
+  sha256: 08a09381f97c556434f698c9c6377fb9a25eb170f815150d4d0d775acd71b88b
+  uri: https://cf-buildpacks.suse.com/dependencies/openresty/openresty-1.13.6.2-linux-x64-sle15-08a09381.tgz
+  version: 1.13.6.2
+dependency_deprecation_dates: []
 include_files:
 - CHANGELOG
 - CONTRIBUTING.md
@@ -73,3 +121,8 @@ include_files:
 - bin/release
 - bin/varify
 - manifest.yml
+language: nginx
+pre_package: scripts/build.sh
+version_lines:
+  mainline: 1.15.x
+  stable: 1.14.x
